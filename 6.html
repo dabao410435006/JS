@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style6.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+  
+  //json 格式
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  const cities = [];
+  //全域window物件的方法，它會被用來執行送出Request(要求)的工作，如果成功得到回應的話，它會回傳一個帶有Response(回應)物件的已實現Promise物件。
+  fetch(endpoint)  //若成功取得(fetch)回應 then(處理???)
+    //.then(response => response.json() )
+    .then(function(response) { 
+      return response.json(); 
+    })
+    .then(function(data) {
+      //展開(spread)運算符，若沒有 ... 將data加進cities 陣列中[arr[1000],1,2,3] 
+      //...data 有拷貝之意
+      cities.push(...data);
+    })
+  function findMatches(wordToMatch,cities) {
+    //過濾出輸入wordToMatch ="XXX"  的城市或州
+    return cities.filter(function(place) {
+      //是否城市或州被搜尋
+      //gi 是 flag
+      const regex = new RegExp(wordToMatch, 'gi');
+      //city、state 是 json裡其中屬性
+      return place.city.match(regex) || place.state.match(regex)
+    });
+  }
+
+  function numberWithCommas(x) {
+    //每三個數字就一個逗號12,345,678   \d 比對數字符號 g 全域
+  return x.toString().replace(/\B(?= (\d{3})+(?!\d) )/g, ',');
+  }
+
+  function displayMatches() {
+    //this.value 是 輸入的單字
+    const matchArray = findMatches(this.value, cities);
+    const html = matchArray.map(place => {
+      const regex = new RegExp(this.value, 'gi');
+      //把他highlight起來
+      const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+      const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+      //map出來是陣列[<li></li>,<li></li>,<li></li>,...]
+      return `
+        <li>
+          <span class="name">${cityName}, ${stateName}</span>
+          <span class="population">${numberWithCommas(place.population)}</span>
+        </li>
+      `;
+    }).join(''); //把逗點變成空
+    suggestions.innerHTML = html;
+  }
+
+  const searchInput = document.querySelector(".search");
+  const suggestions = document.querySelector(".suggestions");
+  //change 相當在 html 使用 onchange
+  searchInput.addEventListener("change",displayMatches);
+  //鍵盤打了就顯示
+  searchInput.addEventListener("keyup",displayMatches);
+
+  
+</script>
+  </body>
+</html>

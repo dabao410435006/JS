@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  const canvas = document.querySelector("#draw");
+  //draw text, lines, boxes, circles, and more - on the canvas.
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.Height = window.innerHeight;
+  //stroke 一筆畫
+  ctx.strokeStyle = "#17BDA1";
+  //兩條交接時是圓形
+  ctx.lineJoin = "round";
+  //頭尾是圓形
+  ctx.lineCap = "round";
+  ctx.lineWidth = 100; 
+
+  let isDrawing = false;
+  //起始點
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0;
+  let direction = true;
+
+  function draw(e) {
+    //沒有按下滑鼠時
+    if(!isDrawing) return; 
+    console.log(e);
+    //hsl(色調,飽和度,亮度)
+    ctx.strokeStyle = `hsl(${hue},100%,50%)`;
+    ctx.lineWidth = hue;
+    //begins a path, or resets the current path
+    ctx.beginPath();
+    //開始
+    ctx.moveTo(lastX,lastY);
+    //終點
+    ctx.lineTo(e.offsetX,e.offsetY);
+    //stroke真正在canvas上畫線
+    ctx.stroke();
+    
+    [lastX,lastY] = [e.offsetX,e.offsetY];
+    hue++;
+    if(hue >= 360) {
+      hue = 0;
+    }
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <=1 ) {
+      direction = !direction;
+    }
+    //一開始小點增加如果 >=100 就開始減
+    if(direction)
+      ctx.lineWidth++;
+    else
+      ctx.lineWidth--;
+  }
+  canvas.addEventListener('mousemove',draw);
+  //按下滑鼠
+  canvas.addEventListener('mousedown',function(e) { 
+    isDrawing = true;
+    //更新起始點
+    [lastX,lastY] = [e.offsetX,e.offsetY];
+  
+  });
+  //放開滑鼠
+  canvas.addEventListener('mouseup',function() { isDrawing = false;});
+  //滑鼠移開時
+  canvas.addEventListener('mouseout',function() { isDrawing = false;});
+</script>
+
+<style>
+  html, body {
+    margin:0;
+  }
+</style>
+
+</body>
+</html>

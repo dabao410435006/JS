@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TODOLIST 💪</title>
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="semanticui/semantic.js"></script>
+  <link rel="stylesheet" type="text/css" href="semanticui/semantic.css">
+  <link rel="stylesheet" href="todolist.css">
+  <style>
+  
+  </style>
+</head>
+<body>
+  <div class="ui center aligned icon header">
+    <h1><i class="circular users icon"></i>To Do List</h1>
+    <div class="ui fluid action input">
+      <input type="text" id="todo" placeholder="待辦事項..">
+      <div class="ui button" onclick="addlist()" style="font-family:'微軟正黑體';">新增</div>
+    </div>
+  </div>
+  <div class="ui selection dropdown" onchange="chg()">
+    <input type="hidden" name="todo">
+    <i class="dropdown icon"></i>
+    <div class="default text" id="result">顯示全部</div>
+    <div class="menu">
+      <div class="item" data-value="2" value="2">顯示全部</div>
+      <div class="item" data-value="1" value="1">只顯示已完成</div>
+      <div class="item" data-value="0" value="0">只顯示未完成</div>
+
+    </div>
+  </div>
+  <ul id="todos" class="ui stacked segments">
+    <li class="bgcolor done ui segment">記得寫Dcard作業</li>
+    <li class="bgcolor ui segment">要去拿貨</li>
+    <li class="bgcolor ui segment">與劉老師meeting</li>
+  </ul>
+  
+  <script>
+  //每個list都新增一個關閉按鍵  
+  $(document).ready(function(){
+    $('.ui.dropdown').dropdown();
+    
+  });
+  
+ 
+  function chg() { 
+    let text = document.getElementById("result").textContent;
+    let done = document.getElementsByClassName("done");
+    allList[0].className
+    if(text=="顯示全部") {
+      for(let i=0;i<done.length;i++) {
+        done[i].classList.remove("delete");
+      }
+      for(let i=0;i<allList.length;i++) {
+        if(allList[i].className.indexOf('done')<=-1) {
+          allList[i].classList.remove("delete");
+        }
+      }
+      for(let i=0;i<done.length;i++) {
+        done[i].classList.remove("delete");
+      }
+    }
+    else if(text=="只顯示未完成") {
+      for(let i=0;i<done.length;i++) {
+        done[i].classList.add("delete");
+      }
+      for(let i=0;i<allList.length;i++) {
+        if(allList[i].className.indexOf('done')<=-1) {
+          allList[i].classList.remove("delete");
+        }
+      }
+    }
+    else if(text=="只顯示已完成") {
+      for(let i=0;i<allList.length;i++) {
+        if(allList[i].className.indexOf('done')<=-1) {
+          allList[i].classList.add("delete");
+        }
+      }
+      for(let i=0;i<done.length;i++) {
+        done[i].classList.remove("delete");
+      }
+    }
+
+  }
+  
+  let allList = document.getElementsByTagName("li");
+  for(let i=0;i<allList.length;i++) {
+    let del = document.createElement('span');
+    del.setAttribute('style',"text-decoration: none;");
+    del.setAttribute('class',"delList");
+    let textDel = document.createTextNode("\u00D7");
+    
+    del.appendChild(textDel);
+    allList[i].appendChild(del);
+    allList[i].onclick = function() {
+      this.classList.toggle("done");
+    }
+    
+
+  }
+  let delList = document.getElementsByClassName('delList');
+  for(let i=0;i<delList.length;i++) {
+    delList[i].onclick = function() {
+      this.parentElement.classList.add("delete");
+    }
+  }
+  
+  function addlist() {
+    //增加list
+    let node = document.createElement('li');
+    let text = document.getElementById("todo").value;
+    if(text!='') {
+      let textNode = document.createTextNode(text);
+      node.classList.add('ui');
+      node.classList.add('segment');
+      node.classList.add('bgcolor');
+      node.appendChild(textNode);
+      document.getElementById('todos').appendChild(node);
+      let del = document.createElement('span');
+      del.setAttribute('class',"delList");
+      let textDel = document.createTextNode("\u00D7");
+
+      del.appendChild(textDel);
+      node.appendChild(del);
+    
+    }
+    else
+      alert("You must write something!");
+    //清除輸入框
+    document.getElementById("todo").value = '';
+    //做完的list
+    for(let i=0;i<allList.length;i++) {
+      allList[i].onclick = function() {
+        this.classList.toggle("done");
+      }
+    }
+    //刪除list
+    for(let i=0;i<delList.length;i++) {
+      delList[i].onclick = function() {
+        console.log(this.parentElement);
+        this.parentElement.classList.add("delete");
+      }
+    }
+
+   
+  }  
+
+  </script>
+</body>
+</html>

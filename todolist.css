@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  min-width: 250px;
+}
+li span {
+  color: initial;
+  cursor: pointer;
+}
+.done {
+  color: #17BDA1;
+  text-decoration: line-through;
+}
+.bgcolor:hover {
+  background-color:rgb(239, 245, 244);
+}
+.delete {
+  display: none;
+}
+li {
+  list-style-type:none;
+  cursor: pointer;
+  font-family:'微軟正黑體';
+  
+}
+
+.delList {
+  background-color: white;
+  text-decoration: none;
+  padding: 14px 20px;
+  position: relative;
+  float:right;
+  clear: both;
+  top:-14px;
+  left: 14px;
+}
+.delList:hover {
+  background-color: rgb(219, 218, 218);
+  text-decoration: none;
+  padding: 14px 20px;
+  position: relative;
+  float:right;
+  clear: both;
+  top:-14px;
+  left: 14px;
+}
+
+li:before {
+  content: '';
+  position: absolute;
+  border-color: gray;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 15px;
+  left: -15px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+li.done:before {
+  content: '';
+  position: absolute;
+  border-color: #17BDA1;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 15px;
+  left: -15px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console 小工具</title>
+</head>
+<body>
+
+  <p onClick="makeGreen()">Hello world</p>
+
+  <script>
+
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+    function makeGreen() {
+      //在屬性上右鍵 -> Break on -> attribute modification 可以知道執行到哪
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+    // 最一般
+    console.log('hello');
+    // 在句中放入字串
+    console.log('Hello I am a %s string!', '㊣');
+    // 改變CSS
+    console.log('%c Tracy is beautiful', 'font-size:50px; background:red;');
+    // warning
+    console.warn('warning');
+    // Error
+    console.error('error!');
+    // Info
+    console.info('我是資訊');
+    // Testing
+    const p = document.querySelector('p');
+    // 如果p.classList不包含list 就顯示後面的error
+    console.assert(p.classList.contains('list'), 'That is wrong!');
+    // clearing console.clear();
+    
+    // 查看 DOM 元素
+    console.log(p);
+    console.dir(p);
+    //console.clear();
+    // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`);
+      console.log(`This is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.log(`${dog.name} is ${dog.age * 7} dog years old`);
+      console.groupEnd(`${dog.name}`);
+    });
+    // 計算他是第幾個''
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    // 花多少時間fetch
+    console.time('fetching data');
+    fetch('https://api.github.com/users/wesbos')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetching data');
+        console.log(data);
+      });
+    // 以Table呈現
+    console.table(dogs);
+  </script>
+</body>
+</html>
